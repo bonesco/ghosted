@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 
 interface FirstRunProps {
@@ -8,6 +8,26 @@ interface FirstRunProps {
 }
 
 export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRunProps) {
+  const [authCode, setAuthCode] = useState('')
+  const [isConnecting, setIsConnecting] = useState(false)
+
+  const handleManualAuth = async () => {
+    if (!authCode.trim()) return
+
+    setIsConnecting(true)
+    try {
+      const result = await window.electron.gmail.handleCallback(authCode.trim())
+      if (result.success) {
+        // Success! The app will reload
+        console.log('✅ Successfully authenticated!')
+      } else {
+        console.error('❌ Authentication failed:', result.error)
+      }
+    } catch (error) {
+      console.error('❌ Error:', error)
+    }
+    setIsConnecting(false)
+  }
   return (
     <div className="h-full flex flex-col">
       {/* Top bar with Settings button */}
@@ -81,18 +101,46 @@ export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRun
           Connect Gmail Account
         </motion.button>
 
+        {/* OR divider */}
+        <div className="flex items-center gap-3 my-6">
+          <div className="flex-1 h-px bg-white/10"></div>
+          <span className="text-white/40 text-xs font-medium">OR PASTE CODE</span>
+          <div className="flex-1 h-px bg-white/10"></div>
+        </div>
+
+        {/* Manual Code Input */}
+        <div className="w-full space-y-3">
+          <input
+            type="text"
+            value={authCode}
+            onChange={(e) => setAuthCode(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleManualAuth()}
+            placeholder="Paste authorization code here..."
+            className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white text-sm placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-apple-blue/50 focus:border-apple-blue/50 transition-all"
+          />
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleManualAuth}
+            disabled={!authCode.trim() || isConnecting}
+            className="w-full px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-white font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isConnecting ? 'Connecting...' : 'Connect with Code'}
+          </motion.button>
+        </div>
+
         {/* Instructions */}
         <div className="mt-8 p-4 bg-white/5 rounded-lg text-left">
-          <h3 className="text-white font-semibold text-sm mb-3">Before you start:</h3>
+          <h3 className="text-white font-semibold text-sm mb-3">How to connect:</h3>
           <ol className="text-white/60 text-sm space-y-2 list-decimal list-inside">
-            <li>Make sure you have OAuth credentials set up</li>
-            <li>Click "Connect Gmail Account" above</li>
-            <li>Sign in with your Google account in the browser</li>
-            <li>Grant permissions to Ghosted</li>
-            <li>You'll be redirected back automatically</li>
+            <li>Set up OAuth credentials (click button above)</li>
+            <li>Click "Connect Gmail Account"</li>
+            <li>Sign in with Google in your browser</li>
+            <li>Copy the authorization code shown</li>
+            <li>Paste it in the field above and click "Connect with Code"</li>
           </ol>
           <p className="text-white/40 text-xs mt-4">
-            Need help setting up OAuth? Check Settings → OAuth Setup
+            💡 Make sure the OAuth callback server is running: <code className="bg-white/10 px-1 rounded">npm run oauth-server</code>
           </p>
         </div>
 
