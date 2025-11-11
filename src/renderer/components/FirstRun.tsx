@@ -3,12 +3,33 @@ import { motion } from 'framer-motion'
 
 interface FirstRunProps {
   onConnect: () => void
+  onSettingsClick: () => void
   error: string | null
 }
 
-export default function FirstRun({ onConnect, error }: FirstRunProps) {
+export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRunProps) {
   return (
-    <div className="h-full flex items-center justify-center p-8">
+    <div className="h-full flex flex-col">
+      {/* Top bar with Settings button */}
+      <div className="h-[60px] px-4 border-b border-raycast-border flex items-center justify-between">
+        <h2 className="text-white text-[15px] font-semibold">Welcome to Ghosted</h2>
+        <button
+          onClick={onSettingsClick}
+          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-sm font-medium transition-colors flex items-center gap-2"
+        >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path
+              d="M8 10.5C9.38071 10.5 10.5 9.38071 10.5 8C10.5 6.61929 9.38071 5.5 8 5.5C6.61929 5.5 5.5 6.61929 5.5 8C5.5 9.38071 6.61929 10.5 8 10.5Z"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+            />
+          </svg>
+          Setup OAuth Credentials
+        </button>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -80,6 +101,7 @@ export default function FirstRun({ onConnect, error }: FirstRunProps) {
           Tip: Press <kbd className="px-2 py-1 bg-white/10 rounded text-white/60 font-medium">⌘⇧E</kbd> anytime to show/hide Ghosted
         </div>
       </motion.div>
+      </div>
     </div>
   )
 }

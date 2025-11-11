@@ -315,8 +315,20 @@ export default function App() {
   if (!state.isAuthenticated) {
     return (
       <div className="w-screen h-screen flex items-center justify-center bg-transparent">
-        <div className="w-[680px] h-[500px] rounded-raycast bg-raycast-bg backdrop-blur-raycast shadow-[0_24px_48px_rgba(0,0,0,0.6),0_0_0_0.5px_rgba(255,255,255,0.1)] overflow-hidden">
-          <FirstRun onConnect={handleAuth} error={state.error} />
+        <div className="w-[680px] h-[500px] rounded-raycast bg-raycast-bg backdrop-blur-raycast shadow-[0_24px_48px_rgba(0,0,0,0.6),0_0_0_0.5px_rgba(255,255,255,0.1)] overflow-hidden relative">
+          <FirstRun onConnect={handleAuth} onSettingsClick={() => setShowSettings(true)} error={state.error} />
+
+          {/* Settings Panel */}
+          <AnimatePresence>
+            {showSettings && (
+              <Settings
+                onClose={() => setShowSettings(false)}
+                userEmail={state.userEmail}
+                onDisconnect={handleDisconnect}
+                onAuthComplete={checkAuth}
+              />
+            )}
+          </AnimatePresence>
         </div>
       </div>
     )
