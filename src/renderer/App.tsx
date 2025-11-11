@@ -315,7 +315,7 @@ export default function App() {
   if (!state.isAuthenticated) {
     return (
       <div className="w-screen h-screen flex items-center justify-center bg-transparent">
-        <div className="w-[680px] h-[500px] rounded-raycast bg-raycast-bg backdrop-blur-raycast shadow-[0_24px_48px_rgba(0,0,0,0.6),0_0_0_0.5px_rgba(255,255,255,0.1)] overflow-hidden relative">
+        <div className="w-[680px] h-[500px] rounded-window bg-gradient-to-b from-raycast-bg-start to-raycast-bg-end backdrop-blur-raycast shadow-window overflow-hidden relative">
           <FirstRun onConnect={handleAuth} onSettingsClick={() => setShowSettings(true)} error={state.error} />
 
           {/* Settings Panel */}
@@ -336,7 +336,7 @@ export default function App() {
 
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-transparent">
-      <div className="w-[680px] h-[500px] rounded-raycast bg-raycast-bg backdrop-blur-raycast shadow-[0_24px_48px_rgba(0,0,0,0.6),0_0_0_0.5px_rgba(255,255,255,0.1)] overflow-hidden flex flex-col relative">
+      <div className="w-[680px] h-[500px] rounded-window bg-gradient-to-b from-raycast-bg-start to-raycast-bg-end backdrop-blur-raycast shadow-window overflow-hidden flex flex-col relative">
         {/* Search Bar */}
         {state.view === 'list' && (
           <SearchBar

@@ -82,14 +82,16 @@ export default function Settings({
           stiffness: 300,
           damping: 30,
         }}
-        className="absolute inset-y-0 right-0 w-[500px] bg-[rgba(28,28,30,0.95)] backdrop-blur-xl border-l border-white/10 flex flex-col"
+        className="absolute inset-y-0 right-0 w-[500px] glassmorphic border-l border-raycast-border flex flex-col"
       >
         {/* Header */}
-        <div className="h-[60px] px-6 border-b border-white/10 flex items-center justify-between">
-          <h2 className="text-white text-[17px] font-semibold">Settings</h2>
-          <button
+        <div className="px-5 py-4 border-b border-raycast-border flex items-center justify-between">
+          <h2 className="text-text-primary text-title">Settings</h2>
+          <motion.button
             onClick={onClose}
-            className="w-7 h-7 rounded hover:bg-white/5 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+            className="w-7 h-7 rounded-item hover:bg-raycast-hover flex items-center justify-center text-text-secondary hover:text-text-primary transition-all duration-150"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path
@@ -99,11 +101,11 @@ export default function Settings({
                 strokeLinecap="round"
               />
             </svg>
-          </button>
+          </motion.button>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 px-6 pt-4 border-b border-white/10">
+        <div className="flex gap-1 px-5 pt-4 border-b border-raycast-border">
           <Tab
             active={activeTab === 'account'}
             onClick={() => setActiveTab('account')}
@@ -131,26 +133,28 @@ export default function Settings({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-5">
           {activeTab === 'account' && (
             <div className="space-y-4">
               <div>
-                <h3 className="text-white font-semibold mb-2">Connected Account</h3>
+                <h3 className="text-text-primary font-medium text-body mb-3">Connected Account</h3>
                 {userEmail ? (
-                  <div className="bg-white/5 rounded-lg p-4 flex items-center justify-between">
+                  <div className="bg-raycast-hover-subtle rounded-button p-4 flex items-center justify-between">
                     <div>
-                      <div className="text-white font-medium">{userEmail}</div>
-                      <div className="text-white/60 text-sm mt-1">Gmail Account</div>
+                      <div className="text-text-primary font-medium text-body">{userEmail}</div>
+                      <div className="text-text-secondary text-caption mt-1">Gmail Account</div>
                     </div>
-                    <button
+                    <motion.button
                       onClick={onDisconnect}
-                      className="px-3 py-1.5 rounded-md bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors text-sm font-medium"
+                      className="px-3 py-1.5 rounded-button bg-priority-high/20 text-priority-high hover:bg-priority-high/30 transition-all duration-150 text-body font-medium"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                     >
                       Disconnect
-                    </button>
+                    </motion.button>
                   </div>
                 ) : (
-                  <p className="text-white/60">No account connected</p>
+                  <p className="text-text-secondary text-body">No account connected</p>
                 )}
               </div>
             </div>
@@ -159,49 +163,51 @@ export default function Settings({
           {activeTab === 'credentials' && (
             <div className="space-y-4">
               <div>
-                <h3 className="text-white font-semibold mb-2">Google OAuth 2.0 Credentials</h3>
-                <p className="text-white/60 text-sm mb-4">
+                <h3 className="text-text-primary font-medium text-body mb-2">Google OAuth 2.0 Credentials</h3>
+                <p className="text-text-secondary text-body mb-4">
                   To use Ghosted, you need to create OAuth credentials in the Google Cloud Console.
                 </p>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-white/80 text-sm mb-2">Client ID</label>
+                    <label className="block text-text-secondary text-body mb-2">Client ID</label>
                     <input
                       type="text"
                       value={clientId}
                       onChange={(e) => setClientId(e.target.value)}
                       placeholder="your-client-id.apps.googleusercontent.com"
-                      className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-apple-blue/50"
+                      className="w-full px-3 py-2.5 bg-raycast-hover-subtle border border-raycast-border-subtle rounded-button text-text-primary text-body placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-link/50 transition-all duration-150"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-white/80 text-sm mb-2">Client Secret</label>
+                    <label className="block text-text-secondary text-body mb-2">Client Secret</label>
                     <input
                       type="password"
                       value={clientSecret}
                       onChange={(e) => setClientSecret(e.target.value)}
                       placeholder="GOCSPX-..."
-                      className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-apple-blue/50"
+                      className="w-full px-3 py-2.5 bg-raycast-hover-subtle border border-raycast-border-subtle rounded-button text-text-primary text-body placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-link/50 transition-all duration-150"
                     />
                   </div>
 
-                  <button
+                  <motion.button
                     onClick={handleSaveCredentials}
-                    className="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-apple-blue to-apple-purple text-white font-medium hover:shadow-lg hover:shadow-apple-blue/30 transition-all"
+                    className="w-full px-4 py-2.5 rounded-button bg-gradient-to-r from-link to-apple-purple text-text-primary font-medium hover:shadow-lg hover:shadow-link/30 transition-all duration-150"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     Save Credentials
-                  </button>
+                  </motion.button>
 
                   {savedMessage && (
-                    <div className="text-green-400 text-sm text-center">{savedMessage}</div>
+                    <div className="text-success text-body text-center">{savedMessage}</div>
                   )}
                 </div>
 
-                <div className="mt-6 p-4 bg-white/5 rounded-lg">
-                  <h4 className="text-white font-medium mb-2">Setup Instructions:</h4>
-                  <ol className="text-white/60 text-sm space-y-2 list-decimal list-inside">
+                <div className="mt-6 p-4 bg-raycast-hover-subtle rounded-button">
+                  <h4 className="text-text-primary font-medium text-body mb-2">Setup Instructions:</h4>
+                  <ol className="text-text-secondary text-body space-y-2 list-decimal list-inside">
                     <li>Go to Google Cloud Console</li>
                     <li>Create a new project or select existing</li>
                     <li>Enable Gmail API</li>
@@ -216,19 +222,19 @@ export default function Settings({
 
           {activeTab === 'shortcuts' && (
             <div>
-              <h3 className="text-white font-semibold mb-4">Keyboard Shortcuts</h3>
+              <h3 className="text-text-primary font-medium text-body mb-4">Keyboard Shortcuts</h3>
               <div className="space-y-2">
                 {shortcuts.map((shortcut, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between py-2 border-b border-white/5 last:border-0"
+                    className="flex items-center justify-between py-2.5 border-b border-raycast-border-subtle last:border-0"
                   >
-                    <span className="text-white/80 text-sm">{shortcut.description}</span>
+                    <span className="text-text-secondary text-body">{shortcut.description}</span>
                     <div className="flex gap-1">
                       {shortcut.keys.map((key, i) => (
                         <kbd
                           key={i}
-                          className="px-2 py-1 bg-white/10 rounded text-white/80 text-xs font-medium min-w-[24px] text-center"
+                          className="shortcut-pill"
                         >
                           {key}
                         </kbd>
@@ -244,21 +250,21 @@ export default function Settings({
             <div className="space-y-6">
               <div className="text-center">
                 <div className="text-6xl mb-4">👻</div>
-                <h3 className="text-white font-bold text-xl mb-1">Ghosted</h3>
-                <p className="text-white/60 text-sm">Version {version}</p>
+                <h3 className="text-text-primary font-semibold text-title-large mb-1">Ghosted</h3>
+                <p className="text-text-secondary text-body">Version {version}</p>
               </div>
 
-              <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-2">About</h4>
-                <p className="text-white/60 text-sm leading-relaxed">
+              <div className="bg-raycast-hover-subtle rounded-button p-4">
+                <h4 className="text-text-primary font-medium text-body mb-2">About</h4>
+                <p className="text-text-secondary text-body leading-relaxed">
                   Ghosted is a premium keyboard-first Gmail client for macOS. Built with Electron,
                   React, and TypeScript, designed to feel like a $200/year premium app.
                 </p>
               </div>
 
-              <div className="bg-white/5 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-2">License</h4>
-                <p className="text-white/60 text-sm">MIT License</p>
+              <div className="bg-raycast-hover-subtle rounded-button p-4">
+                <h4 className="text-text-primary font-medium text-body mb-2">License</h4>
+                <p className="text-text-secondary text-body">MIT License</p>
               </div>
             </div>
           )}
@@ -281,10 +287,10 @@ function Tab({
     <button
       onClick={onClick}
       className={`
-        px-4 py-2 text-sm font-medium rounded-t-lg transition-colors
+        px-4 py-2 text-body font-medium rounded-t-button transition-all duration-150
         ${active
-          ? 'text-white bg-white/5'
-          : 'text-white/60 hover:text-white hover:bg-white/5'
+          ? 'text-text-primary bg-raycast-hover-subtle'
+          : 'text-text-secondary hover:text-text-primary hover:bg-raycast-hover-subtle'
         }
       `}
     >

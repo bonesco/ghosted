@@ -24,7 +24,7 @@ export default function EmailList({
         <div className="text-center">
           <div className="w-8 h-8 mb-3 mx-auto">
             <svg
-              className="animate-spin text-white/40"
+              className="animate-spin text-text-secondary"
               viewBox="0 0 24 24"
               fill="none"
             >
@@ -39,7 +39,7 @@ export default function EmailList({
               />
             </svg>
           </div>
-          <p className="text-white/60 text-sm">Loading your inbox...</p>
+          <p className="text-text-secondary text-body">Loading your inbox...</p>
         </div>
       </div>
     )
@@ -50,7 +50,7 @@ export default function EmailList({
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
           <div className="text-4xl mb-3">📭</div>
-          <p className="text-white/60 text-sm">No emails found</p>
+          <p className="text-text-secondary text-body">No emails found</p>
         </div>
       </div>
     )
@@ -97,20 +97,20 @@ function EmailListItem({ email, index, isSelected, onClick, onHover }: EmailList
       onClick={onClick}
       onMouseEnter={onHover}
       className={`
-        h-[48px] px-4 flex items-center gap-3 cursor-pointer transition-all duration-150
+        py-2.5 px-4 flex items-center gap-3 cursor-pointer transition-all duration-150 rounded-item mx-2
         ${isSelected
-          ? 'bg-gradient-to-r from-apple-blue/15 to-apple-purple/15 border-l-2 border-apple-blue'
-          : 'hover:bg-white/5 border-l-2 border-transparent'
+          ? 'bg-raycast-selected shadow-selected'
+          : 'hover:bg-raycast-hover'
         }
       `}
     >
       {/* Number badge */}
       <div
         className={`
-          w-5 h-5 rounded flex items-center justify-center text-[11px] font-semibold
+          w-5 h-5 rounded-small flex items-center justify-center text-metadata font-medium flex-shrink-0
           ${isSelected
-            ? 'bg-apple-blue text-white'
-            : 'bg-white/10 text-white/60'
+            ? 'bg-link text-text-primary'
+            : 'bg-white/8 text-text-secondary'
           }
         `}
       >
@@ -119,7 +119,7 @@ function EmailListItem({ email, index, isSelected, onClick, onHover }: EmailList
 
       {/* Unread indicator */}
       {email.isUnread && (
-        <div className="w-1.5 h-1.5 rounded-full bg-apple-blue" />
+        <div className="w-1.5 h-1.5 rounded-full bg-link flex-shrink-0" />
       )}
 
       {/* Content */}
@@ -127,8 +127,8 @@ function EmailListItem({ email, index, isSelected, onClick, onHover }: EmailList
         {/* Sender */}
         <div
           className={`
-            w-32 truncate text-[13px]
-            ${email.isUnread ? 'font-semibold text-white' : 'font-medium text-white/80'}
+            w-32 truncate text-body
+            ${email.isUnread ? 'font-medium text-text-primary' : 'font-normal text-text-secondary'}
           `}
         >
           {senderName}
@@ -138,20 +138,20 @@ function EmailListItem({ email, index, isSelected, onClick, onHover }: EmailList
         <div className="flex-1 min-w-0 flex items-center gap-2">
           <span
             className={`
-              truncate text-[13px]
-              ${email.isUnread ? 'font-medium text-white/90' : 'text-white/60'}
+              truncate text-body
+              ${email.isUnread ? 'font-normal text-text-primary' : 'text-text-secondary'}
             `}
           >
             {email.subject}
           </span>
-          <span className="text-white/40 text-[13px]">—</span>
-          <span className="text-white/40 text-[13px] truncate">
+          <span className="text-text-tertiary text-body">—</span>
+          <span className="text-text-tertiary text-body truncate">
             {truncateText(email.snippet, 50)}
           </span>
         </div>
 
         {/* Date */}
-        <div className="text-white/40 text-[11px] font-medium ml-auto">
+        <div className="text-text-tertiary text-metadata font-normal ml-auto flex-shrink-0">
           {formatEmailDate(email.date)}
         </div>
       </div>

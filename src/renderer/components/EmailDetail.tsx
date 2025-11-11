@@ -32,12 +32,14 @@ export default function EmailDetail({
       className="h-full flex flex-col"
     >
       {/* Header */}
-      <div className="h-[60px] px-4 border-b border-raycast-border flex items-center gap-3">
+      <div className="px-4 py-3 border-b border-raycast-border flex items-center gap-3">
         {/* Back button */}
-        <button
+        <motion.button
           onClick={onBack}
-          className="w-7 h-7 rounded hover:bg-white/5 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+          className="w-7 h-7 rounded-item hover:bg-raycast-hover flex items-center justify-center text-text-secondary hover:text-text-primary transition-all duration-150"
           title="Back (ESC)"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path
@@ -48,11 +50,11 @@ export default function EmailDetail({
               strokeLinejoin="round"
             />
           </svg>
-        </button>
+        </motion.button>
 
         {/* Title */}
         <div className="flex-1 min-w-0">
-          <h2 className="text-white text-[15px] font-semibold truncate">
+          <h2 className="text-text-primary text-title truncate">
             {email.subject}
           </h2>
         </div>
@@ -160,24 +162,24 @@ export default function EmailDetail({
       </div>
 
       {/* Email Content */}
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-5">
         {/* Sender info */}
-        <div className="mb-6">
+        <div className="mb-5">
           <div className="flex items-start gap-3">
             {/* Avatar */}
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-apple-blue to-apple-purple flex items-center justify-center text-white font-semibold text-sm">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-link to-apple-purple flex items-center justify-center text-text-primary font-medium text-body">
               {senderName.charAt(0).toUpperCase()}
             </div>
 
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <span className="text-white font-semibold text-sm">{senderName}</span>
+                <span className="text-text-primary font-medium text-body">{senderName}</span>
                 {email.isUnread && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-apple-blue" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-link" />
                 )}
               </div>
-              <div className="text-white/60 text-xs mt-0.5">{email.from}</div>
-              <div className="text-white/40 text-xs mt-1">
+              <div className="text-text-secondary text-caption mt-0.5">{email.from}</div>
+              <div className="text-text-tertiary text-caption mt-1">
                 {formatEmailDate(email.date)} • {email.date.toLocaleTimeString('en-US', {
                   hour: 'numeric',
                   minute: '2-digit',
@@ -189,7 +191,7 @@ export default function EmailDetail({
 
         {/* Email body */}
         <div className="prose prose-invert max-w-none">
-          <div className="text-white/80 text-[14px] leading-relaxed whitespace-pre-wrap">
+          <div className="text-text-secondary text-body leading-relaxed whitespace-pre-wrap">
             {cleanBody}
           </div>
         </div>
@@ -212,7 +214,7 @@ function ActionButton({
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
-      className="w-7 h-7 rounded hover:bg-white/5 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+      className="w-7 h-7 rounded-item hover:bg-raycast-hover flex items-center justify-center text-text-secondary hover:text-text-primary transition-all duration-150"
       title={title}
     >
       {icon}

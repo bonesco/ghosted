@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base typography and layout */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 /* Scrollbar styling (Raycast-like) */
 ::-webkit-scrollbar {
   width: 8px;
@@ -37,13 +53,71 @@
   border-radius: 4px;
 }
 
-/* Smooth animations */
-* {
-  box-sizing: border-box;
+/* Input and button defaults */
+input, textarea, button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+input::placeholder, textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, [role="button"] {
+  transition: all 0.15s ease;
+}
+
+/* Keyboard shortcut pills */
+.shortcut-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+}
+
+/* Section headers */
+.section-header {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Glassmorphism backdrop */
+.glassmorphic {
+  background: rgba(28, 28, 30, 0.85);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+}
+
+/* Priority indicators (colored circles) */
+.priority-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid;
+  background: transparent;
+  display: inline-block;
+}
+
+.priority-indicator.high {
+  border-color: #FF3B30;
+}
+
+.priority-indicator.medium {
+  border-color: #FF9500;
+}
+
+.priority-indicator.low {
+  border-color: #007AFF;
 }

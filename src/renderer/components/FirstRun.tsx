@@ -31,11 +31,13 @@ export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRun
   return (
     <div className="h-full flex flex-col">
       {/* Top bar with Settings button */}
-      <div className="h-[60px] px-4 border-b border-raycast-border flex items-center justify-between">
-        <h2 className="text-white text-[15px] font-semibold">Welcome to Ghosted</h2>
-        <button
+      <div className="px-4 py-3 border-b border-raycast-border flex items-center justify-between">
+        <h2 className="text-text-primary text-title">Welcome to Ghosted</h2>
+        <motion.button
           onClick={onSettingsClick}
-          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-sm font-medium transition-colors flex items-center gap-2"
+          className="px-3 py-1.5 rounded-button bg-raycast-hover-subtle hover:bg-raycast-hover text-text-secondary hover:text-text-primary text-body font-medium transition-all duration-150 flex items-center gap-2"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <path
@@ -46,14 +48,14 @@ export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRun
             />
           </svg>
           Setup OAuth Credentials
-        </button>
+        </motion.button>
       </div>
 
       <div className="flex-1 flex items-center justify-center p-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.25, ease: [0.4, 0.0, 0.2, 1] }}
         className="text-center max-w-md"
       >
         {/* Logo */}
@@ -71,8 +73,8 @@ export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRun
         </motion.div>
 
         {/* Title */}
-        <h1 className="text-white text-3xl font-bold mb-3">Welcome to Ghosted</h1>
-        <p className="text-white/60 text-base mb-8 leading-relaxed">
+        <h1 className="text-text-primary text-title-large mb-3">Welcome to Ghosted</h1>
+        <p className="text-text-secondary text-body mb-8 leading-relaxed">
           A premium keyboard-first Gmail client for macOS.
           Connect your Gmail account to get started.
         </p>
@@ -82,9 +84,9 @@ export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRun
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg"
+            className="mb-6 p-4 bg-priority-high/10 border border-priority-high/30 rounded-button"
           >
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-priority-high text-body">{error}</p>
           </motion.div>
         )}
 
@@ -96,16 +98,16 @@ export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRun
           }}
           whileTap={{ scale: 0.98 }}
           onClick={onConnect}
-          className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-apple-blue to-apple-purple text-white font-semibold text-base shadow-[0_8px_16px_rgba(0,122,255,0.3)] transition-all"
+          className="px-8 py-3 rounded-button bg-gradient-to-r from-link to-apple-purple text-text-primary font-medium text-body shadow-[0_8px_16px_rgba(0,122,255,0.3)] transition-all duration-150"
         >
           Connect Gmail Account
         </motion.button>
 
         {/* OR divider */}
         <div className="flex items-center gap-3 my-6">
-          <div className="flex-1 h-px bg-white/10"></div>
-          <span className="text-white/40 text-xs font-medium">OR PASTE CODE</span>
-          <div className="flex-1 h-px bg-white/10"></div>
+          <div className="flex-1 h-px bg-raycast-border-subtle"></div>
+          <span className="text-text-tertiary text-caption font-medium tracking-caps uppercase">OR PASTE CODE</span>
+          <div className="flex-1 h-px bg-raycast-border-subtle"></div>
         </div>
 
         {/* Manual Code Input */}
@@ -116,37 +118,37 @@ export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRun
             onChange={(e) => setAuthCode(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleManualAuth()}
             placeholder="Paste authorization code here..."
-            className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white text-sm placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-apple-blue/50 focus:border-apple-blue/50 transition-all"
+            className="w-full px-4 py-2.5 bg-raycast-hover-subtle border border-raycast-border-subtle rounded-button text-text-primary text-body placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-link/50 focus:border-link/50 transition-all duration-150"
           />
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleManualAuth}
             disabled={!authCode.trim() || isConnecting}
-            className="w-full px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-white font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-4 py-2.5 rounded-button bg-raycast-hover hover:bg-raycast-selected text-text-primary font-medium text-body transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isConnecting ? 'Connecting...' : 'Connect with Code'}
           </motion.button>
         </div>
 
         {/* Instructions */}
-        <div className="mt-8 p-4 bg-white/5 rounded-lg text-left">
-          <h3 className="text-white font-semibold text-sm mb-3">How to connect:</h3>
-          <ol className="text-white/60 text-sm space-y-2 list-decimal list-inside">
+        <div className="mt-8 p-4 bg-raycast-hover-subtle rounded-button text-left">
+          <h3 className="text-text-primary font-medium text-body mb-3">How to connect:</h3>
+          <ol className="text-text-secondary text-body space-y-2 list-decimal list-inside">
             <li>Set up OAuth credentials (click button above)</li>
             <li>Click "Connect Gmail Account"</li>
             <li>Sign in with Google in your browser</li>
             <li>Copy the authorization code shown</li>
             <li>Paste it in the field above and click "Connect with Code"</li>
           </ol>
-          <p className="text-white/40 text-xs mt-4">
-            💡 Make sure the OAuth callback server is running: <code className="bg-white/10 px-1 rounded">npm run oauth-server</code>
+          <p className="text-text-tertiary text-caption mt-4">
+            💡 Make sure the OAuth callback server is running: <code className="bg-white/8 px-1.5 py-0.5 rounded-small font-mono">npm run oauth-server</code>
           </p>
         </div>
 
         {/* Hint */}
-        <div className="mt-6 text-white/40 text-xs">
-          Tip: Press <kbd className="px-2 py-1 bg-white/10 rounded text-white/60 font-medium">⌘⇧E</kbd> anytime to show/hide Ghosted
+        <div className="mt-6 text-text-tertiary text-caption">
+          Tip: Press <kbd className="shortcut-pill">⌘⇧E</kbd> anytime to show/hide Ghosted
         </div>
       </motion.div>
       </div>

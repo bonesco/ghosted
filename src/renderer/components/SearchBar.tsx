@@ -12,10 +12,10 @@ interface SearchBarProps {
 const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
   ({ value, onChange, onClear, onSettingsClick, isLoading }, ref) => {
     return (
-      <div className="h-[60px] px-4 border-b border-raycast-border flex items-center gap-3">
+      <div className="px-4 py-3 border-b border-raycast-border flex items-center gap-3">
         {/* Search Icon */}
-        <div className="text-white/40">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <div className="text-text-secondary flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
             <path
               d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z"
               stroke="currentColor"
@@ -37,8 +37,8 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Search emails... (press /)"
-          className="flex-1 bg-transparent border-none text-white text-[15px] font-medium placeholder-white/40 focus:outline-none"
+          placeholder="Search emails..."
+          className="flex-1 bg-transparent border-none text-text-primary text-[15px] font-normal placeholder:text-white/30 focus:outline-none"
           autoFocus
         />
 
@@ -50,7 +50,7 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
             exit={{ scale: 0, opacity: 0 }}
             transition={{ duration: 0.15 }}
             onClick={onClear}
-            className="w-5 h-5 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+            className="w-5 h-5 rounded-full bg-white/8 hover:bg-white/12 flex items-center justify-center text-white/50 hover:text-white/70 transition-all duration-150 flex-shrink-0"
           >
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
               <path
@@ -65,9 +65,9 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
 
         {/* Loading spinner */}
         {isLoading && (
-          <div className="w-4 h-4">
+          <div className="w-4 h-4 flex-shrink-0">
             <svg
-              className="animate-spin text-white/40"
+              className="animate-spin text-text-secondary"
               viewBox="0 0 16 16"
               fill="none"
             >
@@ -85,10 +85,12 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
         )}
 
         {/* Settings button */}
-        <button
+        <motion.button
           onClick={onSettingsClick}
-          className="w-7 h-7 rounded hover:bg-white/5 flex items-center justify-center text-white/40 hover:text-white/60 transition-colors"
+          className="w-7 h-7 rounded-item hover:bg-raycast-hover flex items-center justify-center text-text-secondary hover:text-text-primary transition-all duration-150 flex-shrink-0"
           title="Settings (⌘,)"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path
@@ -104,7 +106,7 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
               strokeLinecap="round"
             />
           </svg>
-        </button>
+        </motion.button>
       </div>
     )
   }
