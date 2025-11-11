@@ -20,8 +20,16 @@ export default function EmailDetail({
 }: EmailDetailProps) {
   const senderName = extractSenderName(email.from)
 
-  // Strip HTML tags for simple display (in production, use a proper HTML sanitizer)
-  const cleanBody = email.body?.replace(/<[^>]*>/g, '') || email.snippet
+  // Basic HTML sanitization - removes script tags and event handlers
+  const sanitizeHtml = (html: string) => {
+    return html
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/on\w+="[^"]*"/g, '')
+      .replace(/on\w+='[^']*'/g, '')
+      .replace(/javascript:/gi, '')
+  }
+
+  const emailBody = email.body ? sanitizeHtml(email.body) : email.snippet
 
   return (
     <motion.div
@@ -190,10 +198,14 @@ export default function EmailDetail({
         </div>
 
         {/* Email body */}
-        <div className="prose prose-invert max-w-none">
-          <div className="text-text-secondary text-body leading-relaxed whitespace-pre-wrap">
-            {cleanBody}
-          </div>
+        <div className="email-body">
+          {email.body ? (
+            <div dangerouslySetInnerHTML={{ __html: emailBody }} />
+          ) : (
+            <div className="text-text-secondary whitespace-pre-wrap">
+              {email.snippet}
+            </div>
+          )}
         </div>
       </div>
     </motion.div>
