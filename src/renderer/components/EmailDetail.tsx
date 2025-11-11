@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import DOMPurify from 'dompurify'
 import { Email } from '../types'
 import { formatEmailDate, extractSenderName } from '../utils/email-parser'
 
@@ -20,13 +21,30 @@ export default function EmailDetail({
 }: EmailDetailProps) {
   const senderName = extractSenderName(email.from)
 
-  // Basic HTML sanitization - removes script tags and event handlers
-  const sanitizeHtml = (html: string) => {
-    return html
-      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-      .replace(/on\w+="[^"]*"/g, '')
-      .replace(/on\w+='[^']*'/g, '')
-      .replace(/javascript:/gi, '')
+  // Sanitize email HTML using DOMPurify with strict configuration
+  const sanitizeHtml = (html: string): string => {
+    return DOMPurify.sanitize(html, {
+      // Allow only safe HTML tags and attributes
+      ALLOWED_TAGS: [
+        'p', 'br', 'strong', 'em', 'u', 'a', 'img', 'ul', 'ol', 'li',
+        'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'span',
+        'table', 'thead', 'tbody', 'tr', 'td', 'th', 'code', 'pre', 'hr'
+      ],
+      ALLOWED_ATTR: [
+        'href', 'src', 'alt', 'title', 'width', 'height', 'class', 'id', 'style'
+      ],
+      // Protect against protocol-based attacks
+      ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+      // Keep relative URLs
+      KEEP_CONTENT: true,
+      // Return a string instead of DOM node
+      RETURN_DOM: false,
+      RETURN_DOM_FRAGMENT: false,
+      // Sanitize style attributes
+      SANITIZE_DOM: true,
+      // Remove data URIs (potential XSS vector)
+      ALLOW_DATA_ATTR: false,
+    })
   }
 
   const emailBody = email.body ? sanitizeHtml(email.body) : email.snippet
