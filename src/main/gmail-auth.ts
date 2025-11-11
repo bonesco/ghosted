@@ -65,7 +65,11 @@ export function setupGmailAuth(mainWindow: BrowserWindow) {
   ipcMain.handle('gmail-auth-callback', async (_event, code: string) => {
     try {
       if (!oauth2Client) {
-        throw new Error('OAuth client not initialized')
+        throw new Error('OAuth client not initialized. Please try starting the authentication process again.')
+      }
+
+      if (!code || code.trim() === '') {
+        throw new Error('Authorization code is required')
       }
 
       console.log('🔄 Exchanging code for tokens...')
@@ -78,7 +82,7 @@ export function setupGmailAuth(mainWindow: BrowserWindow) {
       const email = profile.data.emailAddress
 
       if (!email) {
-        throw new Error('Could not get user email')
+        throw new Error('Could not get user email from Gmail')
       }
 
       // Store tokens securely in macOS Keychain
@@ -94,9 +98,23 @@ export function setupGmailAuth(mainWindow: BrowserWindow) {
       console.log('✅ Gmail authenticated:', email)
 
       return { success: true, email }
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ OAuth callback error:', error)
-      return { success: false, error: (error as Error).message }
+
+      // Provide user-friendly error messages
+      let errorMessage = 'Authentication failed. Please try again.'
+
+      if (error.message?.includes('invalid_grant')) {
+        errorMessage = 'This authorization code has already been used or has expired. Please start the authentication process again and use a fresh code.'
+      } else if (error.message?.includes('redirect_uri_mismatch')) {
+        errorMessage = 'OAuth redirect URI mismatch. Make sure http://localhost:3000/oauth/callback is added to your Google Cloud Console.'
+      } else if (error.message?.includes('invalid_client')) {
+        errorMessage = 'Invalid OAuth credentials. Please check your Client ID and Client Secret in Settings.'
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+
+      return { success: false, error: errorMessage }
     }
   })
 

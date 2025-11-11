@@ -4,29 +4,38 @@ import { motion } from 'framer-motion'
 interface FirstRunProps {
   onConnect: () => void
   onSettingsClick: () => void
+  onAuthComplete: () => void
   error: string | null
 }
 
-export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRunProps) {
+export default function FirstRun({ onConnect, onSettingsClick, onAuthComplete, error }: FirstRunProps) {
   const [authCode, setAuthCode] = useState('')
   const [isConnecting, setIsConnecting] = useState(false)
+  const [authError, setAuthError] = useState<string | null>(null)
 
   const handleManualAuth = async () => {
-    if (!authCode.trim()) return
+    if (!authCode.trim() || isConnecting) return
 
     setIsConnecting(true)
+    setAuthError(null) // Clear previous errors
     try {
       const result = await window.electron.gmail.handleCallback(authCode.trim())
       if (result.success) {
-        // Success! The app will reload
+        // Success! Clear the input and notify parent
         console.log('✅ Successfully authenticated!')
+        setAuthCode('')
+        // Notify parent to check auth and update UI
+        setTimeout(() => onAuthComplete(), 100)
       } else {
         console.error('❌ Authentication failed:', result.error)
+        setAuthError(result.error || 'Authentication failed. Please try again.')
+        setIsConnecting(false)
       }
     } catch (error) {
       console.error('❌ Error:', error)
+      setAuthError('An unexpected error occurred. Please try again.')
+      setIsConnecting(false)
     }
-    setIsConnecting(false)
   }
   return (
     <div className="h-full flex flex-col">
@@ -78,13 +87,13 @@ export default function FirstRun({ onConnect, onSettingsClick, error }: FirstRun
         </p>
 
         {/* Error */}
-        {error && (
+        {(error || authError) && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg"
           >
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-red-400 text-sm">{authError || error}</p>
           </motion.div>
         )}
 
